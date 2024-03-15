@@ -13,4 +13,12 @@ LEXICON_RU: dict[str, str] = {
     # Buttons
     "btn_specialist": "Специалист 🧑🏻‍💻",
     "btn_customer": "Заказчик 🤴🏼",
+
+    # Callback messages
+    "msg_write_password": "Отлично! Придумайте пароль.",
+
+    # Messages
+    "user_reg_success": "Поздравляю! Ты успешно зарегистрировался"
+
+
 }
