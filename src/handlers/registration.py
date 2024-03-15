@@ -18,5 +18,6 @@ async def get_password(message: Message, state: FSMContext):
 
     data = await state.get_data()
     print(data['role'])
+    print(message.from_user.id)
     # TODO: Тут функция которая отправляет данные пользователя в БД
     await message.answer(LEXICON_RU['user_reg_success'])
