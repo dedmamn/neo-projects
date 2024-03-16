@@ -10,6 +10,7 @@ from src.states.states import RegistrationStateGroup
 router: Router = Router()
 
 
+
 @router.message(CommandStart())
 async def start_command(message: Message, state: FSMContext):
     await message.answer(LEXICON_RU['/start'], reply_markup=start_keyboard)
