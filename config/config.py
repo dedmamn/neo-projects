@@ -9,6 +9,7 @@ from .base import getenv, ImproperlyConfigured
 class TelegramBotConfig:
     token: str
     adminId: int
+    database: str
 
 
 @dataclass
@@ -24,5 +25,6 @@ def load_config() -> Config:
         tg_bot=TelegramBotConfig(
             token=getenv("BOT_TOKEN"),
             adminId=int(getenv("ADMIN_ID")),
+            database=getenv('DATABASE_URL')
         )
     )
