@@ -1,57 +1,52 @@
-# AIOgram Telegram Bot Template
+# Проект NeoProjectBot
 
-A simple structure for creating telegram bots using AIOgram 3.
+Добро пожаловать в проект NeoProjectBot!
 
----
-***Readme template:***
+Этот проект представляет собой чат-бота с базой данных, предназначенного для подбора специалистов на IT-проекты. Наш бот поможет вам как заказчику найти подходящих специалистов для вашего проекта, так и специалисту найти интересные проекты для участия.
 
-# [project name]
+## Содержание
+- [Начало работы](#Как-использовать)
+- [Функционал](#Как-это-работает)
+- [Важно](#Важно)
+- [Вклад](#Вклад-в-проект)
+- [Связь](#Связь)
+- [Команда проекта](#Команда-проекта)  
 
-![aiogram](https://img.shields.io/badge/python-v3.10-blue.svg?logo=python&logoColor=yellow) ![aiogram](https://img.shields.io/badge/aiogram-v3-blue.svg?logo=telegram) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+## Как использовать
 
-About...
+Чтобы начать использовать чат-бота, просто запустите бота @neo_projects_bot на платформе Telegram. При первом входе вам будет предложено зарегистрироваться как специалист или как заказчик. В зависимости от выбора, вас попросят предоставить необходимую информацию для регистрации.
 
-## Features
+### Как специалист
 
-The bot provides the following features:
+Если вы регистрируетесь как специалист, вам будет предложен список вопросов, на которые нужно ответить. Эти вопросы помогут составить ваш профиль и поместить вас в базу данных как специалиста.
 
--
--
+### Как заказчик
 
-## Commands
+Если вы регистрируетесь как заказчик, вам будет предложено рассказать о вашей компании и вашем проекте. Эта информация поможет определить необходимые специалисты для вашего проекта и создать запрос на их поиск.
 
-The bot has several commands that can be used to access its features:
+## Как это работает
 
-- `/start`: Sends a ...
-- `/help`: Sends a ...
+Когда заказчик создает запрос на поиск специалистов, на основе предоставленных им данных формируется SQL-запрос к базе данных. Этот запрос помогает подобрать подходящих специалистов для данного проекта. Специалистам, которые подходят для участия в проекте, отправляется уведомление с описанием проекта и контактными данными заказчика.
 
-## Requirements
+## Важно!
 
-- Python v3.10
-- aiogram v3
-- dotenv v1
+Чтобы использовать чат-бота, вам необходим аккаунт на платформе Telegram.
 
-## Installation
+## Вклад в проект
 
-To get started with this bot, follow these steps:
+Если у вас есть предложения по улучшению проекта или вы обнаружили ошибку, пожалуйста, создайте issue или отправьте pull request. Мы приветствуем ваши вклады!
 
-- Clone this repository to your local machine.
+## Связь
 
-    ```
-    $ git clone [source]
-    ```
+Если у вас возникли вопросы или предложения, не стесняйтесь связаться с нами по адресу Connection-vlademyanov@yandex.ru.
 
-- Create a virtual environment, activate it and install required dependencies.
+Наслаждайтесь использованием нашего чат-бота и удачи в ваших IT-проектах!
 
-    ```
-    $ python3.10 -m venv env
-    $ source env/bin/activate
-    $ pip install -r requirements/local.txt
-    ```
+## Команда проекта
 
-- Create a new bot on Telegram by talking to the BotFather, and [obtain the API token](https://www.siteguarding.com/en/how-to-get-telegram-bot-api-token).
-
-- Rename the file `.env.dist` to `.env` and replace the placeholders with required data.
-
-- Run the bot using `python bot.py`.
-
+В проекте участвовали студенты 2-го курса ГУАП:<br/>
+Дмитрий Васильев - project-manager/frontend-developer<br/>
+Диана Халикова - analyst/UX-designer<br/>
+Дмитрий Ковалев - UI-designer<br/>
+Атнон Терехов - backend-developer<br/>
+Ирина Сердюкова - analyst/UX-designer<br/>
