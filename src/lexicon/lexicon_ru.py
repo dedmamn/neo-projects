@@ -39,6 +39,17 @@ LEXICON_RU: dict[str, str] = {
     "btn_middle_plus": "Мидл+ 👨🏻",
     "btn_senior": "Сеньор 👨🏻‍🦳",
 
+    # Skills question
+    "msg_write_skills": "Какими навыками вы владеете?",
+    # Skills Buttons
+    "btn_backend": "Backend ⚙️",
+    "btn_frontend": "Frontend 👨🏻‍💻",
+    "btn_designer": "Designer 🖌",
+    "btn_analyst": "Аналитик 📊",
+    "btn_security": "Специалист по кибербезопасности 🛡",
+
+
+
 
 
 

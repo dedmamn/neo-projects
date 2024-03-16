@@ -4,8 +4,9 @@ from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
+from src.keyboards.specialist_reg_keyboards import grade_keyboard
 from src.lexicon.lexicon_ru import LEXICON_RU
-from src.states.states import RegistrationStateGroup, ProfileCustomer, ProfileSpecialist
+from src.states.states import RegistrationStateGroup, ProfileCustomer, ProfileSpecialist, CustomerStateGroup
 
 router: Router = Router()
 
@@ -48,28 +49,19 @@ async def get_fio(message: Message, state: FSMContext):
         await message.answer(LEXICON_RU['msg_company_name_waiting'])
     elif data['role'] == 'specialist':
         await state.set_state(ProfileSpecialist.waiting_for_grade.state)
-        await message.answer(LEXICON_RU['msg_choice_grade'])
+        await message.answer(LEXICON_RU['msg_choice_grade'], reply_markup=grade_keyboard)
     else:
         await message.answer(LEXICON_RU['im_broken'])
 
-# # Регистрация компании
-# @router.message(StateFilter(ProfileCustomer.waiting_for_fio.state))
-# async def customer_fio_wait(message: Message, state: FSMContext):
-#     fio = message.text.split()
-#     await state.set_data({'fio': fio})
-#     await message.answer(LEXICON_RU['msg_company_name_waiting'])
-#     await state.set_state(ProfileCustomer.waiting_for_company_name.state)
-#
-#
-# @router.message(StateFilter(ProfileCustomer.waiting_for_company_name.state))
-# async def company_name_wait(message: Message, state: FSMContext):
-#     await state.set_data({'company_name': message.text})
-#     await message.answer(LEXICON_RU['msg_end_profile_edit'])
-#
-#
-# # Регистрация специалиста
-# @router.message(StateFilter(ProfileSpecialist.waiting_for_grade.state))
-# async def specialist_grade_answer(message: Message, state: FSMContext):
-#     await state.set_data({'company_name': message.text})
-#     await message.answer(LEXICON_RU[''])
-#     await state.set_state(ProfileCustomer.waiting_for_company_name.state)
+
+# Регистрация компании
+@router.message(StateFilter(ProfileCustomer.waiting_for_company_name.state))
+async def get_company_name(message: Message, state: FSMContext):
+    await state.set_data({'company_name': message.text})
+    await message.answer(LEXICON_RU['msg_end_profile_edit'])
+    await state.set_state(CustomerStateGroup.default.state)
+
+
+# Регистрация специалиста
+
+

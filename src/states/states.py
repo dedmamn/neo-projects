@@ -20,8 +20,8 @@ class ProfileCustomer(StatesGroup):
 
 
 class CustomerStateGroup(StatesGroup):
-    pass
+    default = State()
 
 
 class SpecialistStateGroup(StatesGroup):
-    pass
+    default = State()
