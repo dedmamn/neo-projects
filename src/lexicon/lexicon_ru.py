@@ -28,6 +28,8 @@ LEXICON_RU: dict[str, str] = {
 
     # Specialist
     "msg_choice_grade": "Каков ваш уровень навыков?",
+    'edit_profile_end': "Отлично, теперь все готово к тому что бы ты получил свой первый проект!\nУдачи!",
+
 
     # Buttons
     "btn_specialist": "Специалист 🧑🏻‍💻",
@@ -41,12 +43,6 @@ LEXICON_RU: dict[str, str] = {
 
     # Skills question
     "msg_write_skills": "Какими навыками вы владеете?",
-    # Skills Buttons
-    "btn_backend": "Backend ⚙️",
-    "btn_frontend": "Frontend 👨🏻‍💻",
-    "btn_designer": "Designer 🖌",
-    "btn_analyst": "Аналитик 📊",
-    "btn_security": "Специалист по кибербезопасности 🛡",
 
 
 

@@ -62,6 +62,5 @@ async def get_company_name(message: Message, state: FSMContext):
     await state.set_state(CustomerStateGroup.default.state)
 
 
-# Регистрация специалиста
 
 
