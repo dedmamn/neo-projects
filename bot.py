@@ -6,7 +6,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import Config, load_config
 from src.callbacks import choice_role, specialist_reg
-from src.commands import start
+from src.commands import start, reset
 from src.handlers import registration
 
 logger = logging.getLogger(__name__)
@@ -26,10 +26,12 @@ async def main():
 
     bot: Bot = Bot(token=config.tg_bot.token)
     dp: Dispatcher = Dispatcher()
+    dp.include_router(reset.router)
     dp.include_router(start.router)
     dp.include_router(choice_role.router)
     dp.include_router(registration.router)
     dp.include_router(specialist_reg.router)
+
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
