@@ -25,6 +25,6 @@ def load_config() -> Config:
         tg_bot=TelegramBotConfig(
             token=getenv("BOT_TOKEN"),
             adminId=int(getenv("ADMIN_ID")),
-            database=getenv('DATABASE_URL')
+            database=getenv('DATABASE')
         )
     )
