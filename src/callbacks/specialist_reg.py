@@ -11,8 +11,9 @@ router: Router = Router()
 
 @router.callback_query(StateFilter(ProfileSpecialist.waiting_for_grade.state))
 async def get_grade(callback: CallbackQuery, state: FSMContext):
+    user_data = await state.get_data()
     grade = LEXICON_RU[callback.data]
-    await state.set_data({'grade': grade})
+    await state.set_data({**user_data,'grade': grade})
     keyboard = await update_skills_keyboard(state)
     await callback.message.answer(LEXICON_RU['msg_write_skills'], reply_markup=keyboard)
     await state.set_state(ProfileSpecialist.waiting_for_skills.state)
@@ -45,7 +46,7 @@ async def update_skills_keyboard(state: FSMContext) -> InlineKeyboardMarkup:
 async def save_skills(callback: CallbackQuery, state: FSMContext):
     user_data = await state.get_data()
     clean_skills_array = [skill.replace('btn_', '') for skill in user_data.get('selected_skills')]
-    await state.set_data({'clean_skills': clean_skills_array})
+    await state.set_data({**user_data, 'clean_skills': clean_skills_array})
     await callback.message.answer(LEXICON_RU['edit_profile_end'])
     await state.set_state(SpecialistStateGroup.default.state)
 

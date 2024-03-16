@@ -6,7 +6,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import Config, load_config
 from src.callbacks import choice_role, specialist_reg
-from src.commands import start, reset
+from src.commands import start, reset, profile
 from src.handlers import registration
 
 logger = logging.getLogger(__name__)
@@ -31,6 +31,7 @@ async def main():
     dp.include_router(choice_role.router)
     dp.include_router(registration.router)
     dp.include_router(specialist_reg.router)
+    dp.include_router(profile.router)
 
 
     await bot.delete_webhook(drop_pending_updates=True)
