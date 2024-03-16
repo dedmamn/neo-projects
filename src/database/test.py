@@ -1,86 +1,90 @@
-import decimal
-from decimal import Decimal
-from datetime import datetime
-
-from sqlalchemy import create_engine, text, Integer,DECIMAL, BigInteger, Column, String, MetaData, Table, select, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, as_declarative, Mapped, mapped_column, relationship
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy.orm import registry
 
-engine = create_engine("postgresql://postgres:qaz@localhost:5433/anton", echo=True)
-#engine = create_engine("postgresql://anton:1234@localhost:5432/ProjectBD", echo=False)
-#engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, SmallInteger
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
-@as_declarative()
+Base = declarative_base()
+engine = create_engine("postgresql://postgres:12345@localhost:5432/postgres", echo=True)
 
-class AbstractModel:
-    id: Mapped[int]= mapped_column(autoincrement=True, primary_key=True)
+class Skill(Base):
+    __tablename__ = 'skills'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    specialists = relationship('Specialist', secondary='specialists_skills')
 
-class UserModel(AbstractModel):
-    __tablename__ = 'users'
-    user_id: Mapped[int]= mapped_column(BigInteger)
-    role: Mapped[str]= mapped_column()
-    pass_hash: Mapped[int]= mapped_column()
-    full_name: Mapped[str] = mapped_column()
-    client_id: Mapped[int]= mapped_column(ForeignKey('clients.id'))
 
-class ClientModel(AbstractModel):
-    __tablename__ = 'clients'
-    company_name: Mapped[str] = mapped_column()
-    user: Mapped[int] = relationship("UserModel")
+class SpecialistSkill(Base):
+    __tablename__ = 'specialists_skills'
+    specialist_id = Column(Integer, ForeignKey('specialists.id'), primary_key=True)
+    skill_id = Column(Integer, ForeignKey('skills.id'), primary_key=True)
 
-class SpecialistModel(AbstractModel):
+
+class Specialist(Base):
     __tablename__ = 'specialists'
-    grade: Mapped[int]= mapped_column()
+    id = Column(Integer, primary_key=True)
+    surname = Column(String)
+    name = Column(String)
+    patronymic = Column(String)
+    position = Column(String)
+    availability = Column(SmallInteger)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    skills = relationship('Skill', secondary='specialists_skills')
+    projects = relationship('Project', secondary='specialists_projects')
 
 
-class SkilsModel(AbstractModel):
-    __tablename__ = 'skils'
-    name: Mapped[str] = mapped_column()
-    description: Mapped[str] = mapped_column()
+class SpecialistProject(Base):
+    __tablename__ = 'specialists_projects'
+    id = Column(Integer, primary_key=True)
+    specialist_id = Column(Integer, ForeignKey('specialists.id'))
+    project_id = Column(Integer, ForeignKey('projects.id'))
+    role = Column(String)
+    start_date = Column(Date)
+    end_date = Column(Date)
+    status = Column(String)
+    feedback = relationship('Feedback', back_populates='specialist_project')
 
 
-class SpecialistSkilsModel(AbstractModel):
-    __tablename__ = 'specialists_skils'
-
-
-
-class SpecialistProjectModel(AbstractModel):
-    __tablename__ = 'specialistproject'
-    project_role: Mapped[str] = mapped_column()
-    start_date: Mapped[datetime] = mapped_column()
-    end_date: Mapped[datetime] = mapped_column()
-    destination_status: Mapped[str] = mapped_column()
-
-
-class FeedbackModel(AbstractModel):
-    __tablename__ = 'feedback'
-    rating: Mapped[int] = mapped_column()
-    comment: Mapped[str] = mapped_column()
-
-class ProjectsModel(AbstractModel):
+class Project(Base):
     __tablename__ = 'projects'
-
-    name: Mapped[str] = mapped_column()
-    description: Mapped[str] = mapped_column()
-    start_date: Mapped[datetime] = mapped_column()
-    end_date: Mapped[datetime] = mapped_column()
-    expected_result: Mapped[str] = mapped_column()
-    requirements_for_specialists: Mapped[str] = mapped_column()
-    processing_status: Mapped[int] = mapped_column()
-    top_budget: Mapped[decimal] = mapped_column(DECIMAL)
-    bottom_budget: Mapped[decimal] = mapped_column(DECIMAL)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    client_id = Column(Integer, ForeignKey('clients.id'))
+    specialists = relationship('Specialist', secondary='specialists_projects')
 
 
+class Client(Base):
+    __tablename__ = 'clients'
+    id = Column(Integer, primary_key=True)
+    company_name = Column(String)
+    contact_person = Column(String)
+    projects = relationship('Project')
+
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    user_id_tt = Column(String)
+    role = Column(String)
+    password_hash = Column(Integer)
+    specialist = relationship('Specialist')
+
+
+class Feedback(Base):
+    __tablename__ = 'feedback'
+    id = Column(Integer, primary_key=True)
+    score = Column(SmallInteger)
+    comments = Column(String)
+    specialist_project_id = Column(Integer, ForeignKey('specialists_projects.id'))
+    specialist_project = relationship('SpecialistProject', back_populates='feedback')
+
+
+# Set up the engine and create all tables
+Base.metadata.create_all(engine)
 
 with Session(engine) as session:
     with session.begin():
-      AbstractModel.metadata.create_all(engine)
-   #     user = UserModel(name='qaz')
-    #    session.add(user)
-   # with session.begin():
-    #   res = session.execute(select(UserModel).where(UserModel.name=='qaz'))
-
-#print(res.scalars())
-#print(user.name)
-
+        Base.metadata.create_all(engine)
