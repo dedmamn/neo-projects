@@ -3,13 +3,13 @@ from decimal import Decimal
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, SmallInteger, DECIMAL
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, SmallInteger, DECIMAL, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-
 Base = declarative_base()
 engine = create_engine("postgresql://postgres:qaz@localhost:5433/anton", echo=True)
+
 
 class Project(Base):
     __tablename__ = 'projects'
@@ -23,6 +23,7 @@ class Project(Base):
     top_budget = Column(DECIMAL)
     customer_id = Column(Integer, ForeignKey('customers.id'))
     specialists = relationship('Specialist', secondary='specialists_projects')
+
 
 class SpecialistProject(Base):
     __tablename__ = 'specialists_projects'
@@ -39,12 +40,14 @@ class SpecialistProject(Base):
 class Specialist(Base):
     __tablename__ = 'specialists'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
+    patronymic = Column(String)
     skills = Column(String)
-    user_tg = Column(String)
-    password_hash = Column(Integer)
+    user_tg = Column(BigInteger)
+    grade = Column(String)
+    password_hash = Column(String)
     projects = relationship('Project', secondary='specialists_projects')
-
 
 
 class Feedback(Base):
@@ -59,12 +62,13 @@ class Feedback(Base):
 class Customers(Base):
     __tablename__ = 'customers'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
+    patronymic = Column(String)
     company_name = Column(String)
     user_tg = Column(String)
-    password_hash = Column(Integer)
+    password_hash = Column(BigInteger)
     projects = relationship('Project')
-
 
 
 # Set up the engine and create all tables
