@@ -1,12 +1,14 @@
+from decimal import Decimal
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, SmallInteger
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, SmallInteger, DECIMAL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
-engine = create_engine("postgresql://postgres:12345@localhost:5432/postgres", echo=True)
+engine = create_engine("postgresql://postgres:qaz@localhost:5433/postgresql", echo=True)
 
 class Skill(Base):
     __tablename__ = 'skills'
@@ -26,9 +28,6 @@ class Specialist(Base):
     __tablename__ = 'specialists'
     id = Column(Integer, primary_key=True)
     surname = Column(String)
-    name = Column(String)
-    patronymic = Column(String)
-    position = Column(String)
     availability = Column(SmallInteger)
     user_id = Column(Integer, ForeignKey('users.id'))
     skills = relationship('Skill', secondary='specialists_skills')
@@ -52,6 +51,11 @@ class Project(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
+    start_date = Column(Date)
+    end_date = Column(Date)
+    expected_result = Column(String)
+    bottom_budget = Column(DECIMAL)
+    top_budget = Column(DECIMAL)
     client_id = Column(Integer, ForeignKey('clients.id'))
     specialists = relationship('Specialist', secondary='specialists_projects')
 
@@ -60,7 +64,6 @@ class Client(Base):
     __tablename__ = 'clients'
     id = Column(Integer, primary_key=True)
     company_name = Column(String)
-    contact_person = Column(String)
     projects = relationship('Project')
 
 
@@ -68,6 +71,7 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     user_id_tt = Column(String)
+    name = Column(String)
     role = Column(String)
     password_hash = Column(Integer)
     specialist = relationship('Specialist')
